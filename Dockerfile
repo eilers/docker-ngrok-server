@@ -1,11 +1,11 @@
-FROM debian:jessie
+FROM debian:stretch
 MAINTAINER Joeri Verdeyen <joeriv@yappa.be>
 
 RUN apt-get update && \
-    apt-get install -y build-essential golang git mercurial && \
+    apt-get install -y build-essential golang git && \
     mkdir -p /release
 
-ENV NGROK_VERSION 1.7
+ENV NGROK_VERSION master
 RUN git clone https://github.com/inconshreveable/ngrok.git /ngrok
 RUN cd /ngrok; git checkout -fq $NGROK_VERSION
 

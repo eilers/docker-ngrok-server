@@ -12,13 +12,17 @@ Create a self signed certificate (docker host)
     openssl req -new -key device.key -subj "/CN=$NGROK_DOMAIN" -out device.csr
     openssl x509 -req -in device.csr -CA rootCA.pem -CAkey rootCA.key -CAcreateserial -out device.crt -days 5000
 
+Building the docker image
+---------------------------
+
+    docker build -t "im:ngrok-server" .    
 
 Building the binaries (docker host)
 ---------------------
 
     docker run -it -v /tmp/bin:/ngrok/bin \
         -e CA_CERT="`awk 1 ORS='\\n' rootCA.pem`" \
-        yappabe/ngrok-server
+        im/ngrok-server
 
 Server and client binaries will be available in `/tmp/bin` on the host.
 
@@ -43,7 +47,7 @@ Running the server (docker host)
         -e TLS_KEY="`awk 1 ORS='\\n' device.key`" \
         -e CA_CERT="`awk 1 ORS='\\n' rootCA.pem`" \
         -e DOMAIN="$NGROK_DOMAIN" \
-        yappabe/ngrok-server
+        im/ngrok-server
 
 
 Environment Variables
@@ -66,3 +70,6 @@ Client configuration (Mac)
     server_addr: ngrok.youdomain.com:4443
     trust_host_root_certs: false
     EOL
+
+
+
